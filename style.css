@@ -1,11 +1,11 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 200px);
+    grid-template-columns: repeat(4, 100px);
     grid-gap: 15px;
   }
   
   .grid-cell {
-    height: 200px;
+    height: 100px;
     border-radius: 3px;
     background: #acaaaa;
   }
@@ -14,5 +14,19 @@
     color: #f9f6f2;
     font-weight: bold;
     text-align: center;
-    line-height: 100px;
+    line-height: 0px;
   }
+  .color-2  { color: rgb(230, 230, 255); } /* Light Blue */
+  .color-4  { color: rgb(176, 196, 222); } /* Sky Blue */
+  .color-8  { color: rgb(128, 192, 232); } /* Light Sky Blue */
+  .color-16  { color: rgb(100, 149, 237); } /* Cornflower Blue */
+  .color-32 { color: rgb(72, 115, 206); }  /* Medium Sky Blue */
+  .color-64  { color: rgb(52, 88, 159); }   /* Blue-Gray */
+  .color-128  { color: rgb(30, 60, 130); }   /* Dark Blue-Gray */
+  .color-256  { color: rgb(0, 71, 171); }    /* Cobalt Blue */
+  .color-512  { color: rgb(0, 51, 153); }    /* Deep Blue */
+  .color-1024 { color: rgb(0, 20, 102); }    /* Very Dark Blue */
+  .color-2048 { color: rgb(0, 0, 139); }     /* Dark Blue */
+  .color-4056 { color: rgb(0, 0, 128); }     /* Navy Blue */
+  .color-8112 { color: rgb(20, 25, 120); }   /* Dark Navy */
+  
