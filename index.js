@@ -3,6 +3,8 @@ var score = 0;
 var cellArray = [];
 var rows = 4;
 var cols = 4;
+var oldIndices = [];
+var newIndices = [];
 
 
 function generateRandomNumber() {
@@ -38,45 +40,61 @@ document.addEventListener("keydown", function(event) {
 });
 
 document.querySelector(".reset-button").addEventListener("click", resetGame);
-var response = fetch("./data/score.json")
-var data = response.json()
-var hightestScore = data.score
-document.querySelector(".best-score-value").innerHTML = hightestScore
-console.log(hightestScore)
+var hightestScore = 0;
+
+fetch("./data/score.json")
+    .then(response => response.json())
+    .then(data => {hightestScore = data;});
 
 function mergeCells(direction) {
     switch (direction) {
         case "left":
+            oldIndices = checkBlank();
             mergeLeft();
             if (checkGameOver()) {
                 alert("Game Over! Your score is: " + score);
             }
-            updateScore()
-            generateRandomNumber();
+            updateScore();
+            newIndices = checkBlank();
+            if (oldIndices != newIndices) {
+                generateRandomNumber();
+            };
             break;
         case "up":
-            mergeUp(); // For simplicity, using mergeLeft for up direction
+            oldIndices = checkBlank();
+            mergeUp();
             if (checkGameOver()) {
                 alert("Game Over! Your score is: " + score);
             }
             updateScore()
-            generateRandomNumber();
+            newIndices = checkBlank();
+            if (oldIndices != newIndices) {
+                generateRandomNumber();
+            };
             break;
         case "right":
+            oldIndices = checkBlank();
             mergeRight();
             if (checkGameOver()) {
                 alert("Game Over! Your score is: " + score);
             }
             updateScore()
-            generateRandomNumber();
+            newIndices = checkBlank();
+            if (oldIndices != newIndices) {
+                generateRandomNumber();
+            };
             break;
         case "down":
+            oldIndices = checkBlank();
             mergeDown();
             if (checkGameOver()) {
                 alert("Game Over! Your score is: " + score);
             }
             updateScore()
-            generateRandomNumber();
+            newIndices = checkBlank();
+            if (oldIndices != newIndices) {
+                generateRandomNumber();
+            };
             break;
         default:
             console.log("Invalid direction");
@@ -95,11 +113,11 @@ function mergeLeft() {
                 newRow[j].textContent *= 2;
                 score += parseInt(newRow[j].textContent);
                 newRow[j + 1].textContent = "";
-                newRow.filter(function(cell) {
-                    return cell.textContent != "";
-                });
             }
         }
+        newRow = newRow.filter(function(cell) {
+            return cell.textContent != "";
+        });
         for (j = 0; j < cols; j++) {
             if (j < newRow.length) {
                 cellArray[i][j].textContent = newRow[j].textContent;
@@ -122,11 +140,11 @@ function mergeRight() {
                 newRow[j].textContent *= 2;
                 score += parseInt(newRow[j].textContent);
                 newRow[j + 1].textContent = "";
-                newRow.filter(function(cell) {
-                    return cell.textContent != "";
-                });
             }
         }
+        newRow = newRow.filter(function(cell) {
+            return cell.textContent != "";
+        });
         for (j = 0; j < cols; j++) {
             if (j < newRow.length) {
                 cellArray[i][cols - j - 1].textContent = newRow[j].textContent;
@@ -150,11 +168,11 @@ function mergeUp() {
                 newCol[i].textContent *= 2;
                 score += parseInt(newCol[i].textContent);
                 newCol[i + 1].textContent = ""
-                newRow.filter(function(cell) {
-                    return cell.textContent != "";
-                });
             }
         }
+        newCol = newCol.filter(function(cell) {
+            return cell.textContent != "";
+        });
         for (i = 0; i < rows; i++) {
             if (i < newCol.length) {
                 cellArray[i][j].textContent = newCol[i].textContent;
@@ -179,11 +197,11 @@ function mergeDown() {
                 newCol[i].textContent *= 2;
                 score += parseInt(newCol[i].textContent);
                 newCol[i + 1].textContent = ""
-                newRow.filter(function(cell) {
-                    return cell.textContent != "";
-                });
             }
         }
+        newCol = newCol.filter(function(cell) {
+            return cell.textContent != "";
+        }); 
         for (i = 0; i < rows; i++) {
             if (i < newCol.length) {
                 cellArray[rows - i - 1][j].textContent = newCol[i].textContent;
@@ -216,16 +234,17 @@ function updateScore() {
     if (score > hightestScore) {
         document.querySelector(".best-score-value").innerHTML = score
 
-        var scoreData = {"score": score}
-        var jsonString = JSON.stringify(scoreData, null, 2)
+        // need to use node js on updating score
+        // var scoreData = {"score": score}
+        // var jsonString = JSON.stringify(scoreData, null, 2)
 
-        writeFile('data.json', jsonString, (err) => {
-        if (err) {
-            console.error('Error writing JSON file:', err);
-            return;
-        }
-        console.log('JSON file has been saved as data.json');
-        });
+        // writeFile('./data/score.json', jsonString, (err) => {
+        // if (err) {
+        //     console.error('Error writing JSON file:', err);
+        //     return;
+        // }
+        // console.log('JSON file has been saved as data.json');
+        // });
     }
 }
 
@@ -238,4 +257,16 @@ function resetGame() {
         }
     }
     generateRandomNumber();
+}
+
+function checkBlank() {
+    var cell1DArray = cellArray.flat();
+    var indices = [];
+
+    cell1DArray.forEach((item, index) => {
+        if (item.textContent === "") {
+        indices.push(index);
+        }
+    });
+    return indices
 }
