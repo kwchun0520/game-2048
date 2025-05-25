@@ -205,8 +205,11 @@ function mergeDown() {
         for (i = 0; i < rows; i++) {
             if (i < newCol.length) {
                 cellArray[rows - i - 1][j].textContent = newCol[i].textContent;
+                cellArray[rows - i - 1][j].textContent
+                
             } else {
-                cellArray[rows - i - 1][j].textContent = "";
+                cellArray[rows - i - 1][j].textContent = ""
+                cellArray[rows - i - 1][j].classList
             }
         }
     }
